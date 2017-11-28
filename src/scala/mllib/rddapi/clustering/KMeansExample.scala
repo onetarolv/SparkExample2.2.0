@@ -1,7 +1,7 @@
-package mllib.APIGuide
+package mllib.rddapi.clustering
 
 import org.apache.log4j.{Level, Logger}
-import org.apache.spark.mllib.clustering.{KMeansModel, KMeans}
+import org.apache.spark.mllib.clustering.KMeans
 import org.apache.spark.mllib.linalg.Vectors
 import org.apache.spark.sql.SparkSession
 
