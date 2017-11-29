@@ -10,14 +10,11 @@ import org.apache.spark.mllib.clustering.PowerIterationClustering
  * Created by engry on 2017/11/28.
  */
 object PowerIterationClusteringExample {
-  case class Params(
-                   k: Int = 2,
-                   numPoints: Int = 10,
-                   maxIterations: Int = 15
-                     ) extends AbstractParams[Params]
+
   def main(args: Array[String]) {
     Logger.getLogger("org.apache.spark").setLevel(Level.WARN)
-    System.setProperty("hadoop.home.dir", "D:\\envpath\\hadoop-2.6.4");
+    val hadoopPath = args(0)
+    System.setProperty("hadoop.home.dir", hadoopPath);
     val spark = SparkSession.builder()
       .appName("PICExample")
       .master("local")
@@ -26,10 +23,12 @@ object PowerIterationClusteringExample {
     val k = 10
     val numPoints = 10
     val sc = spark.sparkContext
+
     val circlesRdd = generateCirclesRdd(sc, k, numPoints)
+
     val model = new PowerIterationClustering()
       .setK(k)
-      .setMaxIterations(maxIterations = 80)
+      .setMaxIterations(maxIterations = 20)
       .setInitializationMode("degree")
       .run(circlesRdd)
 
@@ -39,12 +38,13 @@ object PowerIterationClusteringExample {
     val assignmentsStr = assignments
       .map { case (k, v) =>
         s"$k -> ${v.sorted.mkString("[", ",", "]")}"
-      }mkString(",")
+      }mkString(",") + "\n"
 
     val sizesStr = assignments.map {
       _._2.length
     }.sorted.mkString("(", ",", ")")
     println(s"Cluster assignments: $assignmentsStr\ncluster sizes: $sizesStr")
+
     spark.stop()
   }
 
