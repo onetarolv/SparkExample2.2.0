@@ -50,7 +50,7 @@ object DecisionTreeForClassification {
 
     /**-----------example for datasets "iris"-----------*/
     val category = Map("Iris-setosa" -> 0, "Iris-versicolor" -> 1, "Iris-virginica" -> 2)
-    val iris = sc.textFile("data/mllib/classification/iris.txt").filter(_.nonEmpty)map(point => {
+    val iris = sc.textFile("data/mllib/classification/iris.txt").filter(_.nonEmpty).map(point => {
       val split = point.trim.split(",")
       new LabeledPoint(category(split(4)), Vectors.dense(split(0).toDouble, split(1).toDouble, split(2).toDouble, split(3).toDouble))
     })
