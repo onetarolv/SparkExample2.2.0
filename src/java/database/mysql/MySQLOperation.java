@@ -1,16 +1,14 @@
 package database.mysql;
 
-import breeze.optimize.linear.LinearProgram;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by DELL_PC on 2018/4/24.
@@ -201,21 +199,7 @@ public class MySQLOperation {
         }
     }
 
-    public void readBySpark() {
-        SparkSession spark = SparkSession.builder()
-                .appName("ReadBySpark")
-                .master("local[2]")
-                .getOrCreate();
-        Dataset<Row> jdbcDF = spark.read()
-                .format("jdbc")
-                .option("url", url)
-                .option("bdtable", db + ".info")
-                .option("user", user)
-                .option("password", pwd)
-                .load();
-        jdbcDF.show();
-        spark.stop();
-    }
+
 }
 
 class MySQLTest {
@@ -229,7 +213,6 @@ class MySQLTest {
 //        values.add(new String[]{"'Sam'", "'0003'"});
 //        values.add(new String[]{"'Anna'", "'0004'"});
 //        op.insertDB("info", cols, values);
-        op.readBySpark();
         op.closeDB();
     }
 }
